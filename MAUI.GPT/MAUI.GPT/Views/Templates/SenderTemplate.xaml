@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MAUI.GPT.Models"
+             x:Class="MAUI.GPT.Views.Templates.SenderTemplate">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="MessageLayout">
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="Margin" Value="20,0,0,0"/>
+            </Style>
+            <Style TargetType="BoxView" x:Key="MessageDecoration">
+                <Setter Property="CornerRadius" Value="10,10,10,0"/>
+                <Setter Property="Color" Value="{StaticResource Primary}"/>
+            </Style>
+            <Style TargetType="Label" x:Key="MessageText">
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="TextColor" Value="{StaticResource White}"/>
+            </Style>
+            
+        </ResourceDictionary>
+    </ContentView.Resources>
+    <Grid 
+        x:DataType="models:Message"
+        Style="{StaticResource MessageLayout}">
+        <BoxView
+            Style="{StaticResource MessageDecoration}"/>
+        <Label
+            Style="{StaticResource MessageText}"
+            Text="{Binding MessageText}"/>
+    </Grid>
+</ContentView>

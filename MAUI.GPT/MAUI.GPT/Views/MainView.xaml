@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUI.GPT.Views.MainView"
+             xmlns:vm="clr-namespace:MAUI.GPT.ViewModels"
+             xmlns:templates="clr-namespace:MAUI.GPT.Views.Templates"
+             x:DataType="vm:MainViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <DataTemplate x:Key="MsgSenderTemplate">
+                <templates:SenderTemplate/>
+            </DataTemplate>
+            
+            <DataTemplate x:Key="MsgReceiverTemplate">
+                <templates:ReceiverTemplate/>
+            </DataTemplate>
+
+            <templates:MessageTemplateSelector 
+                x:Key="MsgTemplateSelector"
+                SenderTemplate="{StaticResource MsgSenderTemplate}"
+                ReceiverTemplate="{StaticResource MsgReceiverTemplate}"/>
+
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,20"
+            VerticalOptions="Center">
+
+            <Grid 
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="20">
+                <Entry
+                    Grid.Column="0"
+                    x:Name="input"
+                    Placeholder="Escriba una pregunta"
+                    Text="{Binding Text}"
+                    FontSize="18"/>
+
+                <Button
+                    Grid.Column="1"
+                    x:Name="CounterBtn"
+                    Text="Enviar"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="{StaticResource White}"
+                    Command="{Binding SendMessageCommand}"/>
+            </Grid>
+
+
+            <ActivityIndicator
+                IsVisible="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}"
+                HorizontalOptions="Center"/>
+
+            <CollectionView
+                ItemsSource="{Binding Messages}"
+                ItemTemplate="{StaticResource MsgTemplateSelector}">
+
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
