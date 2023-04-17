@@ -9,7 +9,7 @@ namespace MAUI.GPT;
 
 public static class MauiProgram
 {
-    private const string API_KEY = "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";
+    private const string API_KEY = "YOUR-API-KEY";
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
