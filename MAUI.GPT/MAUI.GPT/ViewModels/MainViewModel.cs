@@ -1,14 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MAUI.GPT.Models;
-using OpenAI_API;
-using OpenAI_API.Completions;
+using MAUI.GPT.Services.Interfaces;
 using System.Collections.ObjectModel;
 
 namespace MAUI.GPT.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
-    private const string API_KEY = "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";
+    private readonly IGptService _gptService;
+
+    public MainViewModel(IGptService gptService)
+    {
+        _gptService = gptService;
+    }
 
     [ObservableProperty]
     private ObservableCollection<Message> _messages = new();
@@ -27,16 +31,15 @@ public partial class MainViewModel : ObservableObject
             IsBusy = true;
 
             Messages.Insert(0, new() { IsSender = true, MessageText = Text });
-            var api = new OpenAIAPI(API_KEY);
-            var completion = new CompletionRequest
-            {
-                Prompt = Text,
-                MaxTokens = 4000
-            };
+            var result = await _gptService.SendChatMessage(Text);
+
             Text = string.Empty;
-            var result = await api.Completions.CreateCompletionAsync(completion);
             if (result is not null)
-                Messages.Insert(0, new() { IsSender = false, MessageText = string.Join("\n", result.Completions.Select(x => x.Text)) });
+                Messages.Insert(0, new() { IsSender = false, MessageText = result });
+        }
+        catch (Exception e)
+        {
+            Messages.Insert(0, new() { IsSender = true, MessageText = $"Error. {e.Message}" });
         }
         finally
         {

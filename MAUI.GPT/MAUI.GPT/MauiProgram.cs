@@ -1,11 +1,15 @@
 ﻿using CommunityToolkit.Maui;
-using MAUI.GPT.Views;
+using MAUI.GPT.Services;
+using MAUI.GPT.Services.Interfaces;
 using MAUI.GPT.ViewModels;
+using MAUI.GPT.Views;
+using OpenAI_API;
 
 namespace MAUI.GPT;
 
 public static class MauiProgram
 {
+    private const string API_KEY = "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";
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
@@ -18,7 +22,13 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		builder.Services.AddSingletonWithShellRoute<MainView, MainViewModel>(nameof(MainView));
+		// REGISTER PAGES
+		builder.Services.AddScopedWithShellRoute<MainView, MainViewModel>(nameof(MainView));
+
+		// REGISTER SERVICES
+		builder.Services.AddScoped<IOpenAIAPI>(x => new OpenAIAPI(API_KEY));
+		builder.Services.AddScoped(x => x.GetService<IOpenAIAPI>().Chat.CreateConversation());
+		builder.Services.AddScoped<IGptService, GptService>();
 
 		return builder.Build();
 	}

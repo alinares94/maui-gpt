@@ -29,8 +29,7 @@
     <ScrollView>
         <VerticalStackLayout
             Spacing="25"
-            Padding="30,20"
-            VerticalOptions="Center">
+            Padding="30,20">
 
             <Grid 
                 ColumnDefinitions="*,Auto"
